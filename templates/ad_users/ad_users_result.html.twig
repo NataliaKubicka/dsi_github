@@ -1,0 +1,23 @@
+{% include 'dashboard/index.html.twig' %}
+
+
+{% block body %}
+    <div class="w-75 mx-auto mb-3 py-3">
+        <h4>Ilość znalezionych rekordów, których nazwa zaczyna się na  <span class="font-weight-bold">{{ search }}</span>: {{ results|length }}</h4>
+        <h6><a href="{{ path('search_ad_user_form') }}">Powrót do wyszukiwania</a></h6>
+    </div>
+    {% for result in results %}
+        <div class="w-75 mx-auto custom-card mb-3 px-3 py-3">
+            <div><span class="font-weight-bold">Login : </span>{{ result.login }}</div>
+            <div><span class="font-weight-bold">Office365: </span>{{ result.office365 }}</div>
+            <div><span class="font-weight-bold">Directory name: </span>{{ result.directory_name }}</div>
+            <div><span class="font-weight-bold">Imie: </span>{{ result.first_name }}</div>
+            <div><span class="font-weight-bold">Nazwisko: </span>{{ result.last_name }}</div>
+            <div><span class="font-weight-bold">Adres e-mail: </span>{{ result.email }}</div>
+            <div><span class="font-weight-bold">Numer telefonu: </span>{{ result.mobile }}</div>
+            <div><span class="font-weight-bold">Firma: </span>{{ result.company }}</div>
+            <div><span class="font-weight-bold">Miasto: </span>{{ result.city }}</div>
+            <div><span class="font-weight-bold">Adres: </span>{{ result.address }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}

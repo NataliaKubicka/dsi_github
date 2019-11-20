@@ -1,0 +1,110 @@
+{% extends ['menu/index.html.twig', 'base.html.twig'] %}
+
+{% block title %}DSI{% endblock %}
+
+{% block body %}
+    <nav class="navbar navbar-expand-xl navbar-light bg-light dashboard-navbar">
+        <a href="" class="navbar-brand"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#secondNavbarContent" aria-controls="secondNavbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse second-navbar-brighter-content" id="secondNavbarContent">
+            <ul class="navbar-nav w-100">
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'servers' %}active{% endif %}">
+                    <a href="{{ path('servers_list') }}" class="m-0 nav-link px-4 py-3">Monitoring</a>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'search_ad_user' %}active{% endif %}">
+                    <a href="{{ path('search_ad_user_form') }}" class="m-0 nav-link px-4 py-3">Użytkownicy AD</a>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'search_ad_group' %}active{% endif %}">
+                    <a href="{{ path('search_ad_group_form') }}" class="m-0 nav-link px-4 py-3">Grupy AD</a>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'search_mail_group' %}active{% endif %}">
+                    <a href="{{ path('search_mail_group_form') }}" class="m-0 nav-link px-4 py-3">Grupy Mailowe</a>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'ups' %}active{% endif %}">
+                    <a href="{{ path('ups_list') }}" class="m-0 nav-link px-4 py-3">UPS</a>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'companies' %}active{% endif %}">
+                    <a href="{{ path('companies_list') }}" class="m-0 nav-link px-4 py-3">ID Firm</a>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'probit_users' %}active{% endif %}">
+                    <a href="{{ path('probit_users_list') }}" class="m-0 nav-link px-4 py-3">Nr Probit</a>
+                </li>
+                </li>
+                <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'search_telephones' %}active{% endif %}">
+                    <a href="{{ path('search_telephones_form') }}" class="m-0 nav-link px-4 py-3">Telefony</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item second-navbar-user-menu-link {% if app.request.attributes.get('_route') starts with 'users' %}active{% endif %}">
+                        <a href="{{ path('users_list') }}" class="m-0 nav-link px-4 py-3">Użytkownicy</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+        </div>
+    </nav>
+    <div class="pt-3 w-75 mx-auto">
+        {% if app.request.attributes.get('_route') starts with 'servers' %}
+            <h2>Monitoring "kropkowy"</h2>
+            <p class="py-3">
+                Sprawdzanie dostępności serwerów plików poprzez ich pingowanie, skrypt odświeża się co 5 minuty.
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'search_ad_user' %}
+            <h2>Użytkownicy AD</h2>
+            <p class="pt-3">
+                Wyszukiwanie użytkowników w domenie nt.impel.sa
+            </p>
+            <p class="pb-3 small">
+                W przypadku kiedy wypełnione zostaną obie wartości, wyszukwianą wartością będzie <span class="font-weight-bold">Login użytkownika</span>
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'search_ad_group' %}
+            <h2>Grupy AD</h2>
+            <p class="py-3">
+                Wyszukiwarka członków grup zabezpieczeń AD
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'search_mail_group' %}
+            <h2>Grupy Mailowe</h2>
+            <p class="py-3">
+                Wyszukiwarka członków grup mailowych AD
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'ups' %}
+            <h2>Baza UPS</h2>
+            <p class="py-3">
+                Spis zasilaczy awaryjnych pracujących w GK IMPEL i zarządzanych przez DSI.
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'companies' %}
+            <h2>Baza ID Firm</h2>
+            <p class="py-3">
+                Spis ID spółek GK IMPEL.
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'probit_users' %}
+            <h2>Baza Numerów Probit</h2>
+            <p class="py-3">
+                Spis wolnych i zajętych numerów Probit.
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'search_telephones' %}
+            <h2>Telefony</h2>
+            <p class="pt-3">
+                Wyszukiwanie numerów telefonów w domenie nt.impel.sa
+            </p>
+            <p class="pb-3 small">
+                W przypadku kiedy wypełnione zostaną obie wartości, wyszukwianą wartością będzie <span class="font-weight-bold">Numer telefonu użytkownika</span>
+            </p>
+        {% elseif app.request.attributes.get('_route') starts with 'users' %}
+            <h2>Użytkownicy</h2>
+            <p class="py-3">
+                Dodawanie oraz edycja użytkowników
+            </p>
+        {% endif %}
+    </div>
+    <a href="javascript:" id="return-to-top">
+        <span class="mb-1">▲</span>
+        <span>Przewiń</span>
+    </a>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/app.js') }}"></script>
+{% endblock %}

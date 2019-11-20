@@ -1,0 +1,63 @@
+{% include 'dashboard/index.html.twig' %}
+
+{% block body %}
+    <div>
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="my-3 w-75 mx-auto">
+            <a href="{{ path('companies_add') }}"><button type="button" class="btn btn-primary">Dodaj Firme</button></a>
+        </div>
+        {% endif %}
+        {% for message in app.flashes('notice') %}
+            <div class="modal fade alert-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <table class="table table-responsive-md w-75 mx-auto" id="sixRowsTable5">
+            <thead>
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">ID</th>
+                <th scope="col">AD</th>
+                <th scope="col">Firma</th>
+                <th scope="col">NIP</th>
+                <th scope="col">Uwagi</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Akcje</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for company in companies %}
+                <tr>
+                    <td scope="row">
+                        {% if company.status == 0 %}
+                            Nieaktywna
+                        {% else %}
+                            Aktywna
+                        {% endif %}
+                    </td>
+                    <td>{{ company.idCompany }}</td>
+                    <td>{{ company.adIdentifier }}</td>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.nip }}</td>
+                    <td>{{ company.comments }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('companies_edit', {'id': company.id}) }}"><button type="button" class="btn btn-primary">Edytuj</button></a>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

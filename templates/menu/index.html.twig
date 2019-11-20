@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block menu %}
+    <nav class="navbar navbar-expand-xl navbar-light bg-light app-navbar">
+        <a href="/" class="navbar-brand">
+            Dział Systemów
+            <br>
+            Informatycznych
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        {% if app.user %}
+            <div class="collapse navbar-collapse navbar-brighter-content" id="navbarContent">
+                <ul class="navbar-nav w-100">
+                    <li class="nav-item user-menu-link">
+                        <a href="" class="nav-link m-0 px-4 py-3">Home</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="http://www.bazawiedzy.impel.sa" target="_blank" class="nav-link m-0 px-4 py-3">Telefony</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="http://zamit.si-c.pl/" target="_blank" class="nav-link m-0 px-4 py-3">Zamówienia IT</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="http://portalit.gk.impel.pl/Informacjedlau%C5%BCytkownik%C3%B3w/Instrukcje/tabid/446/Default.aspx" target="_blank" class="nav-link m-0 px-4 py-3">Instrukcje IT</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="http://portalit.gk.impel.pl/" target="_blank" class="nav-link m-0 px-4 py-3">Portal IT</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="https://ficalc.impel.pl/" target="_blank" class="nav-link m-0 px-4 py-3">Fi Calc</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="https://ipvpn-stat.netia.pl/" target="_blank" class="nav-link m-0 px-4 py-3">Statystyka łącz</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="http://awarieit.gk.impel.pl/" target="_blank" class="nav-link m-0 px-4 py-3">Zgłaszanie Awarii</a>
+                    </li>
+                    <li class="nav-item user-menu-link">
+                        <a href="http://portalit.gk.impel.pl/ImpelIT/Proceduryiinstrukcje/tabid/438/ctl/Login/Default.aspx" target="_blank" class="nav-link m-0 px-4 py-3">Opiekunowie usług</a>
+                    </li>
+                    <li class="nav-item user-menu-link logout-button-small-devices">
+                        <a href="{{ path('security_logout') }}" class="nav-link m-0 px-4 py-3">Wyloguj</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse user-select-in-nav">
+                <ul class="navbar-nav ml-auto user-icons-container">
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle user-icon icon" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="indent-large">{{ app.user.name }}</span></a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a href="{{ path('security_logout') }}" class="dropdown-item">Wyloguj</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </nav>
+{% endblock %}

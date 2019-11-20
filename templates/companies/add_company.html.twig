@@ -1,0 +1,30 @@
+{% include 'dashboard/index.html.twig' %}
+
+
+{% block body %}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="w-75 mx-auto custom-card my-3 px-3 py-5">
+        <div class="form-group">
+            {{ form_row(form.status) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.idCompany) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.adIdentifier) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.nip) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.comments) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.save) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

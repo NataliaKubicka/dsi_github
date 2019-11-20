@@ -1,0 +1,72 @@
+{% include 'dashboard/index.html.twig' %}
+
+{% block body %}
+    <div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="my-3 w-75 mx-auto">
+                <a href="{{ path('probit_users_add') }}"><button type="button" class="btn btn-primary">Dodaj Nr. Probit</button></a>
+            </div>
+        {% endif %}
+        {% for message in app.flashes('notice') %}
+            <div class="modal fade alert-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <table class="table table-responsive-md w-75 mx-auto" id="probitUsersTable">
+            <thead>
+            <tr>
+                <th scope="col">Imie</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Nr Probit</th>
+                <th scope="col">Lokalizacja</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th>Akcje</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in probitUsers %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <td>{{ user.number }}</td>
+                    <td>{{ user.localization }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('probit_users_edit', {'id': user.id}) }}"><button type="button" class="btn">Edytuj</button></a>
+                            <button type="button" class="btn btn-clear" data-toggle="modal" data-target="#confirmProbitModal{{ user.id }}">Zwolnij</button>
+                        </td>
+                        <div id="confirmProbitModal{{ user.id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content modal-content-confirm">
+                                    <div class="modal-header border-0">
+                                        <h4 class="modal-title">Potwierdzenie</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body border-0 pt-0">
+                                        <p>Czy na pewno chcesz zwolnić Numer Probit?</p>
+                                    </div>
+                                    <div class="modal-footer border-0 pt-0">
+                                        <a href="{{ path('probit_users_clear', {'id': user.id}) }}" class="mr-auto"><button type="button" class="btn btn-clear">Zwolnij</button></a>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

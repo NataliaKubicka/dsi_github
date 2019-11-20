@@ -1,0 +1,137 @@
+{% include 'dashboard/index.html.twig' %}
+
+{% block body %}
+    <div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="my-3 w-75 mx-auto">
+                <div class="row">
+                    <div class="col-md-6 mt-3">
+                        <a href="{{ path('servers_add') }}"><button type="button" class="btn btn-primary">Dodaj Serwer</button></a>
+                    </div>
+                    <div class="col-md-6 text-right font-weight-bold">
+                        <div>
+                            Poprawny status serwera - <span class="server-status-green-square"></span>
+                        </div>
+                        <div>
+                            Trwa sprawdzanie serwera - <span class="server-status-yellow-square"></span>
+                        </div>
+                        <div>
+                            Niepoprawny status serwera - <span class="server-status-red-square"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="my-3 w-75 mx-auto">
+                <div class="row">
+                    <div class="col-md-12 text-right font-weight-bold">
+                        <div>
+                            Poprawny status serwera - <span class="server-status-green-square"></span>
+                        </div>
+                        <div>
+                            Trwa sprawdzanie serwera - <span class="server-status-yellow-square"></span>
+                        </div>
+                        <div>
+                            Niepoprawny status serwera - <span class="server-status-red-square"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        {% for message in app.flashes('notice') %}
+        <div class="modal fade alert-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% for n in 1..4 %}
+            <div class="table-responsive">
+                <table class="table w-75 mx-auto serversTable" id="sixRowsTable{{ n }}">
+                    <thead>
+                    <tr>
+
+                        {% if n == 1  %}
+                            {% set header = 'Wrocław - Słonimskiego' %}
+                        {% elseif n == 2 %}
+                            {% set header = 'Wrocław - Ślężna' %}
+                        {% elseif n == 2 %}
+                            {% set header = 'Oddziały w Polsce' %}
+                        {% else %}
+                            {% set header = 'Oddziały Impel Cash Solutions' %}
+                        {% endif %}
+
+                        <th scope="col" class="servers-localization" style="width: 20%">{{ header }}</th>
+                        <th scope="col" class="servers-name" style="width: 15%">Nazwa Serwera</th>
+                        <th scope="col" class="servers-address" style="width: 20%">
+                            Adres Serwera
+                            <br>
+                            <span class="small">Data ostatniego sprawdzenia serwera</span>
+                        </th>
+                        <th scope="col" class="servers-esxi">Adres ESXi</th>
+                        <th scope="col" class="servers-ups">Adres UPS'a</th>
+                        <th scope="col" class="servers-link">Strona do instalacji drukarki</th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <th>Akcje</th>
+                        {% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for server in servers %}
+                        {% if n == server.serverGroup  %}
+                            <tr>
+                                <td>{{ server.localization }}</td>
+                                <td>{{ server.name }}</td>
+                                <td>
+                                    <span class="{% if server.status ==  0 %}server-status-red-square{% elseif server.status == 1 %}server-status-green-square{% else %}server-status-yellow-square{% endif %}"></span>
+                                    {{ server.ip }}
+                                    <br>
+                                    <span class="small">{{ server.changeStatusDate|date('Y-m-d H:i:s') }}</span>
+                                </td>
+                                <td>{{ server.esxi }}</td>
+                                <td>{{ server.ups }}</td>
+                                {% if server.printerUrl == 'nie dotyczy' %}
+                                    <td>{{ server.printerUrl }}</td>
+                                {% else %}
+                                    <td><a href="{{ server.printerUrl }}" target="_blank">{{ server.printerUrl }}</a></td>
+                                {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <td>
+                                        <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmServersModal{{ server.id }}">Usuń</button>
+                                    </td>
+                                    <div id="confirmServersModal{{ server.id }}" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content modal-content-confirm">
+                                                <div class="modal-header border-0">
+                                                    <h4 class="modal-title">Potwierdzenie</h4>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+                                                <div class="modal-body border-0 pt-0">
+                                                    <p>Czy na pewno chcesz usunąć serwer?</p>
+                                                </div>
+                                                <div class="modal-footer border-0 pt-0">
+                                                    <a href="{{ path('servers_delete', {'id': server.id}) }}" class="mr-auto"><button type="button" class="btn btn-delete">Usuń</button></a>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

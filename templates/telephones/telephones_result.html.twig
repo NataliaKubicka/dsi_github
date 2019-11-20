@@ -1,0 +1,35 @@
+{% include 'dashboard/index.html.twig' %}
+
+
+{% block body %}
+    <div class="w-75 mx-auto mb-3 py-3">
+        <h4>Ilość znalezionych rekordów, których nazwa zaczyna się na  <span class="font-weight-bold">{{ search }}</span>: {{ ushersPhones|length }}</h4>
+        <h6><a href="{{ path('search_telephones_form') }}">Powrót do wyszukiwania</a></h6>
+    </div>
+    <table class="table table-responsive-md w-75 mx-auto {{  ushersPhones|length == 0 ? 'd-none' }}">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 5%;">Telefon</th>
+                <th scope="col" style="width: 12%;">Użytkownik</th>
+                <th scope="col" style="width: 12%;">Spółka</th>
+                <th scope="col">Lokalizacja</th>
+                <th scope="col">Usługa na SIM</th>
+                <th scope="col">Prawdopodobny aparat</th>
+                <th scope="col" style="width: 5%;">Obiektowy</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for result in ushersPhones %}
+            <tr>
+                <td>{{ result.telefon }}</td>
+                <td>{{ result.uzytkownik }}</td>
+                <td>{{ result.spolka }}</td>
+                <td>{{ result.nazwa_oddzial }}</td>
+                <td>{{ result.usluga }}</td>
+                <td>{{ result.aparat }}</td>
+                <td>{{ result.obiektowy }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

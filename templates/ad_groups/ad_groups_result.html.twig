@@ -1,0 +1,36 @@
+{% include 'dashboard/index.html.twig' %}
+
+{% block body %}
+    <div>
+        <div class="w-75 mx-auto mb-3 py-3">
+            <h4>Ilość znalezionych rekordów, których nazwa zaczyna się na  <span class="font-weight-bold">{{ search }}</span>: {{ results|length }}</h4>
+            <h6><a href="{{ path('search_ad_group_form') }}">Powrót do wyszukiwania</a></h6>
+        </div>
+            {% for key, result in results %}
+                <table class="table table-responsive-md w-75 mx-auto">
+                        {% set results_amount = '' %}
+                        {% for item in result %}
+                            {% set results_amount = result|length %}
+                        {% endfor %}
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 5%">ID</th>
+                            <th scope="col" style="width: 60%">{{ key }} <span class="font-weight-light">(ilość wyników: {{ results_amount }})</span></th>
+                            <th scope="col" style="width: 15%">Imię i nazwisko</th>
+                            <th scope="col" style="width: 15%">Firma</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in result %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ item.dn }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.company }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                </table>
+            {% endfor %}
+    </div>
+{% endblock %}

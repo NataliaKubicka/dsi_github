@@ -1,0 +1,80 @@
+
+{% include 'dashboard/index.html.twig' %}
+
+{% block body %}
+<div>
+    {% if is_granted('ROLE_ADMIN') %}
+    <div class="my-3 w-75 mx-auto">
+        <a href="{{ path('ups_add') }}"><button type="button" class="btn btn-primary">Dodaj UPS</button></a>
+    </div>
+    {% endif %}
+    {% for message in app.flashes('notice') %}
+        <div class="modal fade alert-modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <table class="table table-responsive-md w-75 mx-auto" id="upsTable">
+        <thead>
+            <tr>
+                <th scope="col">Miasto</th>
+                <th scope="col">Adres</th>
+                <th scope="col">Lokalizacja</th>
+                <th scope="col">Przeznaczenie</th>
+                <th scope="col">IP</th>
+                <th scope="col">Model</th>
+                <th scope="col">SN</th>
+                <th scope="col">Info</th>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <th scope="col" class="ups-actions-column">Akcje</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for up in ups %}
+                <tr>
+                    <td>{{ up.city }}</td>
+                    <td>{{ up.address }}</td>
+                    <td>{{ up.localization }}</td>
+                    <td>{{ up.assignment }}</td>
+                    <td>{{ up.ip }}</td>
+                    <td>{{ up.model }}</td>
+                    <td>{{ up.sn }}</td>
+                    <td>{{ up.info }}</td>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <a href="{{ path('ups_edit', {'id': up.id}) }}"><button type="button" class="btn btn-primary">Edytuj</button></a>
+                            <button type="button" class="btn btn-delete" data-toggle="modal" data-target="#confirmUpsModal{{ up.id }}">Usuń</button>
+                        </td>
+                        <div id="confirmUpsModal{{ up.id }}" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content modal-content-confirm">
+                                    <div class="modal-header border-0">
+                                        <h4 class="modal-title">Potwierdzenie</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body border-0 pt-0">
+                                        <p>Czy na pewno chcesz usunąć UPS?</p>
+                                    </div>
+                                    <div class="modal-footer border-0 pt-0">
+                                        <a href="{{ path('ups_delete', {'id': up.id}) }}" class="mr-auto"><button type="button" class="btn btn-delete">Usuń</button></a>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Anuluj</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

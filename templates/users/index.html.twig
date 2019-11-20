@@ -1,0 +1,51 @@
+{% include 'dashboard/index.html.twig' %}
+
+{% block body %}
+    <div>
+        <div class="my-3 w-75 mx-auto">
+            <a href="{{ path('users_add') }}"><button type="button" class="btn btn-primary">Dodaj użytkownika</button></a>
+        </div>
+        {% for message in app.flashes('notice') %}
+            <div class="modal fade alert-modal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <table class="table table-responsive-md w-75 mx-auto" id="sixRowsTable6">
+            <thead>
+            <tr>
+                <th scope="col">Imie</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Nazwa użytkownika</th>
+                <th scope="col">Adres email</th>
+                <th scope="col">Rola</th>
+                <th scope="col">Czy aktywny</th>
+                <th scope="col">Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td scope="row">{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.userRole.description }}</td>
+                    <td>{{ user.isActive == 1 ? 'Tak' : 'Nie'}}</td>
+                    <td>
+                        <a href="{{ path('users_edit', {'id': user.id}) }}"><button class="btn">Edytuj</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
